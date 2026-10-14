@@ -1,12 +1,4 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import React, { useEffect } from "react";
-import { fetchEvents } from "../api/events";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import { useEvents } from "../hooks/useEvents";
 import EventCard from "./EventCard";
 
