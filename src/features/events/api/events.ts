@@ -1,5 +1,5 @@
 import { ticketMasterApi } from "@/shared/api/ticketMaster";
-import { TMResponse } from "../types";
+import { TMEvent, TMResponse } from "../types";
 
 export const fetchEvents = async () => {
   const { data } = await ticketMasterApi.get<TMResponse>("events.json", {
@@ -9,4 +9,9 @@ export const fetchEvents = async () => {
     },
   });
   return data;
+};
+
+export const fetchEventById = async (id: string) => {
+  return await ticketMasterApi.get<TMEvent>(`events/${id}`);
+  // return data;
 };

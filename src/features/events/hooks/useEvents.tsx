@@ -1,29 +1,26 @@
-import { useEffect, useState } from "react";
-import { fetchEvents } from "../api/events";
 import { Alert } from "react-native";
-import { TMEvent } from "../types";
+import { fetchEvents } from "../api/events";
+import { useQuery } from "@tanstack/react-query";
 
 export const useEvents = () => {
-  const [events, setEvents] = useState<TMEvent[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isLoading, error, isError } = useQuery({
+    queryKey: ["fetchEvents"],
+    queryFn: fetchEvents,
+    initialData: {
+      _embedded: {
+        events: [],
+      },
+    },
+  });
 
-  useEffect(() => {
-    setIsLoading(true);
-    (async () => {
-      try {
-        const data = await fetchEvents();
-        setEvents(data._embedded.events);
-      } catch (error) {
-        console.log(error);
-        Alert.alert("Er is iets fout gegaan", "Ophalen van events niet gelukt");
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+  if (isError) {
+    Alert.alert("Er iets fout gegaan", error.message);
+  }
 
   return {
-    events,
+    events: data._embedded.events,
     isLoading,
+    error,
+    isError,
   };
 };
