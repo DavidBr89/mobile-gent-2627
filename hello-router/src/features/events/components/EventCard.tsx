@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { TMEvent } from "../types";
+import { Link } from "expo-router";
 
 interface EventCardProps {
   item: TMEvent;
@@ -9,7 +10,14 @@ const EventCard = ({ item }: EventCardProps) => {
   const firstImage = item.images[0];
 
   return (
-    <View className="bg-amber-500 p-4 rounded-2xl m-4">
+    <Link
+      href={{
+        pathname: "/(tabs)/events/[id]",
+        params: {
+          id: item.id,
+        },
+      }}
+      className="bg-amber-500 p-4 rounded-2xl m-4">
       <Image
         source={{
           uri: firstImage.url,
@@ -18,7 +26,7 @@ const EventCard = ({ item }: EventCardProps) => {
         resizeMode="contain"
       />
       <Text>{item.name}</Text>
-    </View>
+    </Link>
   );
 };
 

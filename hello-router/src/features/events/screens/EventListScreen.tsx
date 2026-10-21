@@ -1,9 +1,21 @@
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
-import { useEvents } from "../hooks/useEvents";
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  FlatList,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useEvents, useInfiniteEvents } from "../hooks/useEvents";
 import EventCard from "../components/EventCard";
 
 const EventListScreen = () => {
-  const { events, isLoading } = useEvents();
+  // const { events, isLoading, isError } = useEvents();
+  const { data, isLoading, isError, fetchNextPage } = useInfiniteEvents();
+
+  const events = data?.pages.flatMap((page) => page._embedded.events) ?? [];
+
+  console.log(data);
 
   if (isLoading) {
     return (
@@ -13,14 +25,24 @@ const EventListScreen = () => {
     );
   }
 
+  if (isError) {
+    Alert.alert("Er is iets fout gegaan", "Geen events");
+  }
+
   return (
-    <FlatList
-      data={events}
-      renderItem={({ item }) => {
-        return <EventCard item={item} />;
-      }}
-      keyExtractor={(item) => item.id}
-    />
+    <>
+      <FlatList
+        data={events}
+        renderItem={({ item }) => {
+          return <EventCard item={item} />;
+        }}
+        keyExtractor={(item) => item.id}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => {
+          fetchNextPage();
+        }}
+      />
+    </>
   );
 };
 

@@ -9,8 +9,16 @@ import { Alert } from "react-native";
 //   });
 // }
 
-export const useEventById = (id: string) =>
-  useQuery({
+export const useEventById = (id: string | string[]) => {
+  const { data, isError, error, isLoading } = useQuery({
     queryKey: ["fetchEventById", id],
     queryFn: () => fetchEventById(id),
   });
+
+  return {
+    event: data?.data,
+    error,
+    isError,
+    isLoading,
+  };
+};
