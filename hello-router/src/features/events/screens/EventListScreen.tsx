@@ -3,15 +3,27 @@ import {
   Alert,
   Button,
   FlatList,
+  Pressable,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
 import { useEvents, useInfiniteEvents } from "../hooks/useEvents";
 import EventCard from "../components/EventCard";
+import { useRouter } from "expo-router";
 
 const EventListScreen = () => {
   // const { events, isLoading, isError } = useEvents();
-  const { data, isLoading, isError, fetchNextPage } = useInfiniteEvents();
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteEvents();
+
+  const router = useRouter();
 
   const events = data?.pages.flatMap((page) => page._embedded.events) ?? [];
 
@@ -31,6 +43,13 @@ const EventListScreen = () => {
 
   return (
     <>
+      <Pressable
+        className="my-4 px-4 py-2"
+        onPress={() => {
+          router.push("/modal");
+        }}>
+        <Text className="text-center">Open Modal</Text>
+      </Pressable>
       <FlatList
         data={events}
         renderItem={({ item }) => {
@@ -38,8 +57,16 @@ const EventListScreen = () => {
         }}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.5}
+        ListFooterComponent={() => {
+          if (isFetchingNextPage) {
+            return <ActivityIndicator size="large" />;
+          }
+          return null;
+        }}
         onEndReached={() => {
-          fetchNextPage();
+          if (hasNextPage) {
+            fetchNextPage();
+          }
         }}
       />
     </>

@@ -17,7 +17,10 @@ export const fetchEventById = async (id: string | string[]) => {
   // return data;
 };
 
-export const fetchInfinityEvents = async (pageParam: number) => {
+export const fetchInfinityEvents = async (
+  pageParam: number,
+  signal?: AbortSignal,
+) => {
   const { data } = await ticketMasterApi.get<TMResponse>("events", {
     params: {
       countryCode: "BE",
@@ -25,6 +28,7 @@ export const fetchInfinityEvents = async (pageParam: number) => {
       page: pageParam,
       size: 20,
     },
+    signal,
   });
   return data;
 };

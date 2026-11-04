@@ -15,6 +15,13 @@ export default function RootLayout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="modal"
+          options={{
+            headerShown: false,
+            presentation: "modal",
+          }}
+        />
       </Stack>
     </QueryClientProvider>
   );

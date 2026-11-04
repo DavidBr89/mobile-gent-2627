@@ -28,10 +28,18 @@ export const useEvents = () => {
 };
 
 export const useInfiniteEvents = () => {
-  const { data, isError, error, isLoading, fetchNextPage } = useInfiniteQuery({
+  const {
+    data,
+    isError,
+    error,
+    isLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["fetchEvents", "infinite"],
-    queryFn: ({ pageParam }) => {
-      return fetchInfinityEvents(pageParam);
+    queryFn: ({ pageParam, signal }) => {
+      return fetchInfinityEvents(pageParam, signal);
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
@@ -46,6 +54,8 @@ export const useInfiniteEvents = () => {
   return {
     data,
     fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
     isError,
     isLoading,
   };

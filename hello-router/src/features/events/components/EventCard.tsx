@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TMEvent } from "../types";
 import { Link } from "expo-router";
 
@@ -11,21 +11,24 @@ const EventCard = ({ item }: EventCardProps) => {
 
   return (
     <Link
+      asChild
       href={{
         pathname: "/(tabs)/events/[id]",
         params: {
           id: item.id,
+          title: item.name,
         },
-      }}
-      className="bg-amber-500 p-4 rounded-2xl m-4">
-      <Image
-        source={{
-          uri: firstImage.url,
-        }}
-        style={{ width: 300, height: 150 }}
-        resizeMode="contain"
-      />
-      <Text>{item.name}</Text>
+      }}>
+      <Pressable className="bg-amber-500 p-4 rounded-2xl m-4 active:opacity-50">
+        <Image
+          source={{
+            uri: firstImage.url,
+          }}
+          style={{ width: 300, height: 150 }}
+          resizeMode="contain"
+        />
+        <Text>{item.name}</Text>
+      </Pressable>
     </Link>
   );
 };
