@@ -1,6 +1,8 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TMEvent } from "../types";
 import { Link } from "expo-router";
+import { useEventStore } from "../stores/useEventStore";
+import MyButton from "@/shared/components/MyButton";
 
 interface EventCardProps {
   item: TMEvent;
@@ -8,6 +10,9 @@ interface EventCardProps {
 
 const EventCard = ({ item }: EventCardProps) => {
   const firstImage = item.images[0];
+
+  const favorites = useEventStore((state) => state.favorites);
+  const addFavorite = useEventStore((state) => state.addFavorite);
 
   return (
     <Link
@@ -28,6 +33,12 @@ const EventCard = ({ item }: EventCardProps) => {
           resizeMode="contain"
         />
         <Text>{item.name}</Text>
+        <MyButton
+          onPress={() => {
+            addFavorite(item);
+          }}
+          label="Voeg toe aan favorieten"
+        />
       </Pressable>
     </Link>
   );

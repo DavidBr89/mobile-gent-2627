@@ -2,8 +2,11 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { SymbolView } from "expo-symbols";
+import { useEventStore } from "@/features/events/stores/useEventStore";
 
 const TabsLayout = () => {
+  const favorites = useEventStore((state) => state.favorites);
+
   return (
     <Tabs
       screenOptions={{
@@ -26,6 +29,12 @@ const TabsLayout = () => {
               size={size}
             />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="favorites"
+        options={{
+          tabBarBadge: favorites.length,
         }}
       />
       <Tabs.Screen

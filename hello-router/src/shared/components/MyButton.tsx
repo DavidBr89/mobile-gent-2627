@@ -41,5 +41,6 @@ const styles = StyleSheet.create({
   },
   txt: {
     color: "white",
+    fontFamily: "ShantellSans",
   },
 });
